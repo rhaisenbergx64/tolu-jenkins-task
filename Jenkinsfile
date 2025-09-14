@@ -3,20 +3,16 @@ pipeline {
 
     stages {
 
-        stage('Hello') {
+        stage('Build') {
             agent {
                 docker {
-                    image 'nginx:1.28.0-alpine'
+                    image 'node:18-alpine'
                     reuseNode true
             }
         }
             steps {
                 sh '''
-                echo 'Hello World'
-                nginx -h
-                echo 'We are testing Github Webhooks 1'
-                echo 'We are testing Github Webhooks 2'
-
+                node --version
                     '''
             }
         }
