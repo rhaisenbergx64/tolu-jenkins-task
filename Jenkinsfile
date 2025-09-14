@@ -15,6 +15,7 @@ pipeline {
                 echo 'Hello World'
                 nginx -h
                 echo 'We are testing Github Webhooks 1'
+                echo 'We are testing Github Webhooks 2'
 
                     '''
             }
