@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        HAPI_VERSION = "v0.1.9"
+    }
+
     stages {
 
         stage('Build') {
@@ -24,27 +28,27 @@ pipeline {
 
             }
         
-
         }
 
         stage('Deploy to hostinger') {
             steps {
                 withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
-            }
                 sh '''
-                ls
-                wget https://github.com/hostinger/api-cli/archive/refs/tags/v0.1.9.tar.gz
-                tar -xf hapi-v0.1.9-linux-amd64.tar.gz
-                sudo mv hapi /usr/local/bin
-
+                ls -la
+                apk add --no-cache curl tar sudo
+                curl -L -o hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
+                https://github.com/hostinger/api-cli/releases/download/${HAPI_VERSION}/hapi-${HAPI_VERSION}-linux-amd64.tar.gz
+                tar -xf hapi-${HAPI_VERSION}-linux-amd64.tar.gz
+                ls -la
+                mv hapi /usr/local/bin
                 export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                 hapi --help
-
-
             '''
-            }
+                }
+                }
+         }
         
         }
-        
     }
-}
+
+
