@@ -20,7 +20,6 @@ pipeline {
                 ls -la
 
             '''
-                archiveArtifacts artifacts: 'build/**', followSymlinks: false, onlyIfSuccessful: true
 
             }
         }
