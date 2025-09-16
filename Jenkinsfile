@@ -28,10 +28,9 @@ pipeline {
         }
 
         stage('Deploy to hostinger') {
-            withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
-            }
             steps {
-
+                withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
+            }
                 sh '''
                 ls
                 wget https://github.com/hostinger/api-cli/archive/refs/tags/v0.1.9.tar.gz
