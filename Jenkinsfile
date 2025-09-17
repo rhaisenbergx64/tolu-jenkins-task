@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        HAPI_VERSION = "v0.1.9"
+        HAPI_VERSION = "0.1.9"
     }
 
     stages {
@@ -40,9 +40,9 @@ pipeline {
                     sh '''
                     apt-get update && apt-get install -y curl tar
 
-                    curl -L -o hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
-                    https://github.com/hostinger/api-cli/archive/refs/tags/${HAPI_VERSION}.tar.gz
-                    tar -xf hapi-$HAPI_VERSION-linux-amd64.tar.gz
+                    curl -L -o hapi-v${HAPI_VERSION}-linux-amd64.tar.gz \
+                    https://github.com/hostinger/api-cli/archive/refs/tags/v${HAPI_VERSION}.tar.gz
+                    tar -xf hapi-v$HAPI_VERSION-linux-amd64.tar.gz
                     ls -la
                     mv api-cli-$HAPI_VERSION /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
