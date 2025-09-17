@@ -31,15 +31,21 @@ pipeline {
         }
 
         stage('Deploy to hostinger') {
+            stage {
+                agent {
+                    docker {
+                        image 'ubuntu:24.04'
+                        reuseNode true
+                        args "-u root"
+                    }
+                }
+            }
             steps {
                 withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
                 sh '''
-                ls -la
-                apk add --no-cache curl tar sudo
                 curl -L -o hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
                 https://github.com/hostinger/api-cli/releases/download/${HAPI_VERSION}/hapi-${HAPI_VERSION}-linux-amd64.tar.gz
                 tar -xf hapi-${HAPI_VERSION}-linux-amd64.tar.gz
-                ls -la
                 mv hapi /usr/local/bin
                 export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                 hapi --help
