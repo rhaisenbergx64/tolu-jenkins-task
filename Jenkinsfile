@@ -41,8 +41,8 @@ pipeline {
                     apt-get update && apt-get install -y curl tar
 
                     curl -L -o hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
-                      https://github.com/hostinger/api-cli/releases/download/${HAPI_VERSION}/hapi-${HAPI_VERSION}-linux-amd64.tar.gz
-                    tar -xf hapi-${HAPI_VERSION}-linux-amd64.tar.gz
+                    https://github.com/hostinger/api-cli/archive/refs/tags/${HAPI_VERSION}.tar.gz
+                    ls -la
                     mv hapi /usr/local/bin
 
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
