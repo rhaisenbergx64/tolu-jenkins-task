@@ -44,7 +44,7 @@ pipeline {
                     https://github.com/hostinger/api-cli/archive/refs/tags/${HAPI_VERSION}.tar.gz
                     tar -xf hapi-$HAPI_VERSION-linux-amd64.tar.gz
                     ls -la
-                    mv hapi /usr/local/bin
+                    mv api-cli-$HAPI_VERSION /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
                     '''
