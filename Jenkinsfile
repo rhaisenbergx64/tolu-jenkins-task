@@ -31,12 +31,12 @@ pipeline {
         }
 
         stage('Deploy to hostinger') {
-            stage {
-                agent {
-                    docker {
-                        image 'ubuntu:24.04'
-                        reuseNode true
-                        args "-u root"
+            agent {
+                docker {
+                    image 'ubuntu:24.04'
+                    reuseNode true 
+                    args "-u root"
+                    
                     }
                 }
             }
