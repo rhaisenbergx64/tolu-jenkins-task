@@ -42,16 +42,11 @@ pipeline {
 
                     curl -L -o hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
                     https://github.com/hostinger/api-cli/archive/refs/tags/${HAPI_VERSION}.tar.gz
+                    tar -xf hapi-$HAPI_VERSION-linux-amd64.tar.gz
                     ls -la
                     mv hapi /usr/local/bin
-
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
-
-                    # Sanity check
                     hapi --help
-
-                    # Example deploy (replace with your actual values)
-                    # hapi apps deploy --token $HAPI_API_TOKEN --app-id <your-app-id> --file build/
                     '''
                 }
             }
