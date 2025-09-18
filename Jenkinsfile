@@ -39,13 +39,14 @@ pipeline {
                 withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
                     sh '''
                     apt-get update && apt-get install -y curl tar
-
-                    curl -L -O https://github.com/hostinger/api-cli/releases/download/v0.1.9/hapi_0.1.9_linux_amd64.tar.gz
-                    tar -xf hapi_${HAPI_VERSION}_linux_amd64.tar.gz
+                    cd ~
+                    wget https://github.com/hostinger/api-cli/releases/download/$HAPI_VERSION/hapi-$HAPI_VERSION-linux-amd64.tar.gz
+                    tar -xf ~/hapi-${HAPI_VERSION}-linux-amd64.tar.gz
                     ls -la
-                    mv api-cli-$HAPI_VERSION /usr/local/bin
+                    mv hapi /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
+                    hapi vps vm list
 
                     '''
                 }
