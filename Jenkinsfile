@@ -46,7 +46,7 @@ pipeline {
                     mv hapi /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
-                    hapi vps vm list
+                    hapi vps vm list --format json
 
                     '''
                 }
