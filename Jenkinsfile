@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        HAPI_VERSION = "0.1.9"
+        HAPI_VERSION = "0.1.1"
     }
 
     stages {
