@@ -38,7 +38,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
                     sh '''
-                    apt-get update && apt-get install -y curl tar
+                    apt-get update && apt-get install -y curl tar wget
                     cd ~
                     wget https://github.com/hostinger/api-cli/releases/download/$HAPI_VERSION/hapi-$HAPI_VERSION-linux-amd64.tar.gz
                     tar -xf ~/hapi-${HAPI_VERSION}-linux-amd64.tar.gz
