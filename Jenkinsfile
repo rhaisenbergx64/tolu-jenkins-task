@@ -40,7 +40,7 @@ pipeline {
                     sh '''
                     apt-get update && apt-get install -y curl tar 
                     cd /home
-                    curl -L -o hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
+                    wget hapi-${HAPI_VERSION}-linux-amd64.tar.gz \
                     https://github.com/hostinger/api-cli/releases/download/${HAPI_VERSION}/hapi-${HAPI_VERSION}-linux-amd64.tar.gz
                     tar -xf hapi-${HAPI_VERSION}-linux-amd64.tar.gz
                     ls -la
