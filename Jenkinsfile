@@ -48,7 +48,7 @@ pipeline {
                 amazon-linux-extras install docker
                 docker build -t $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION .
                 docker images
-                aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+                aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                 docker push $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                 docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                 docker images
