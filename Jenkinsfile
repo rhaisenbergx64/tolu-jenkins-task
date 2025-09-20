@@ -2,12 +2,17 @@ pipeline {
     agent any
 
     environment {
+        AWS_DEFAULT_REGION = "eu-west-3"
+        AWS_IMAGE_NAME = "tolujenkinstask"
+        AWS_ECR_URI = "public.ecr.aws/b3b5m5n0/tolu-jenkins-task"
         HAPI_VERSION = "0.1.1"
+        BUILD_VERSION = "1.0.$BUILD_ID"
+
     }
 
     stages {
 
-        stage('Build') {
+        stage("Build ") {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -16,37 +21,54 @@ pipeline {
             }
             steps {
                 sh '''
-                ls
-                node --version
-                npm --version
                 npm ci
-                npm run build
-                ls -la
+                BUILD_VERSION = $BUILD_VERSION npm run build
+                echo "Build completed with version: $REACT_APP_VERSION"
                 '''
-                archiveArtifacts artifacts: 'build/**', followSymlinks: false, onlyIfSuccessful: true
             }
         }
 
-        stage('Deploy to hostinger') {
+        stage('Build and push Docker Image to ECR') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli:2.13.2'
+                    reuseNode true
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoints"
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: '183e2709-638b-4bec-9307-59c6a121476f', passwordVariable: '', usernameVariable: '')]) {                  
+                }
+                sh '''
+                amazon-linux-extras install docker -y
+                aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
+                docker build -t $AWS_ECR_URI/AWS_IMAGE_NAME:$BUILD_VERSION .
+                docker push $AWS_ECR_URI/AWS_IMAGE_NAME:$BUILD_VERSION
+                
+                '''
+            }
+        }
+
+        stage('Deploy to hostinger vps') {
             agent {
                 docker {
                     image 'ubuntu:24.04'
                     reuseNode true
-                    args "-u root"
+                    args "-u root --entrypoint='' "
                 }
             }
             steps {
                 withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
                     sh '''
                     apt-get update && apt-get install -y curl tar wget
-                    cd /home
                     wget https://github.com/hostinger/api-cli/releases/download/v0.1.1/hapi-0.1.1-linux-amd64.tar.gz
                     tar -xf hapi-0.1.1-linux-amd64.tar.gz
                     ls -la
                     mv hapi /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
-                    hapi vps vm list --format json
+                    hapi vps vm list --format 
+                    
 
                     '''
                 }
