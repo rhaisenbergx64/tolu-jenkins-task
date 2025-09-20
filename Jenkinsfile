@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = "us-east-1"
-        AWS_IMAGE_NAME = "tolujenkinstask"
-        AWS_ECR_URI = "public.ecr.aws/b3b5m5n0/tolu-jenkins-task"
+        AWS_IMAGE_NAME = "tolu-jenkins-task"
+        AWS_ECR_URI = "public.ecr.aws/b3b5m5n0/"
         HAPI_VERSION = "0.1.1"
         BUILD_VERSION = "1.0.$BUILD_ID"
 
