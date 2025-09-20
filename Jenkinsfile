@@ -42,7 +42,6 @@ pipeline {
                 }
                 
                 sh '''
-                aws --version
                 amazon-linux-extras install docker
                 docker build -t $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION .
                 docker images
