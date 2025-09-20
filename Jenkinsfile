@@ -31,7 +31,7 @@ pipeline {
         stage('Build and push Docker Image to ECR') {
             agent {
                 docker {
-                    image 'amazon/aws-cli:2.30.6' 
+                    image 'amazon/aws-cli:2.13.2' 
                     reuseNode true
                     args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
