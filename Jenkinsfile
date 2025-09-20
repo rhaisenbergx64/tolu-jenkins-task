@@ -39,8 +39,6 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tolujenkinstaskaws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-
-                }
                 
                 sh '''
                 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
@@ -54,6 +52,7 @@ pipeline {
                 docker images
                 
                 '''
+                }
             }
         }
 
