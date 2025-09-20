@@ -21,6 +21,7 @@ pipeline {
             }
             steps {
                 sh '''
+                cleanWs()
                 npm ci
                 BUILD_VERSION=$BUILD_VERSION npm run build
                 echo "Build completed with version: $BUILD_VERSION"
