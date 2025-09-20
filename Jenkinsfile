@@ -48,6 +48,8 @@ pipeline {
                 docker images
                 aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_URI
                 docker push $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                docker images
                 
                 '''
             }
