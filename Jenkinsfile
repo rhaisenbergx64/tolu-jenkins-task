@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = "us-east-1"
         AWS_IMAGE_NAME = "tolu-jenkins-task"
-        AWS_ECR_URI = "public.ecr.aws/b3b5m5n0/"
+        AWS_ECR_URI = "public.ecr.aws/b3b5m5n0"
         HAPI_VERSION = "0.1.1"
         BUILD_VERSION = "1.0.$BUILD_ID"
 
@@ -41,15 +41,11 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'tolujenkinstaskaws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                 
                 sh '''
-                export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-                export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
                 amazon-linux-extras install docker
                 docker build -t $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION .
                 docker images
                 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                 docker push $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
-                docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
-                docker images
                 
                 '''
                 }
