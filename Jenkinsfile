@@ -31,7 +31,7 @@ pipeline {
         stage('Build and push Docker Image to ECR') {
             agent {
                 docker {
-                    image 'amazon/aws-cli:2.13.2'
+                    image 'amazon/aws-cli:latest' 
                     reuseNode true
                     args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
@@ -42,6 +42,7 @@ pipeline {
                 }
                 
                 sh '''
+                dnf install -y docker
                 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
                 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
                 amazon-linux-extras install docker -y
