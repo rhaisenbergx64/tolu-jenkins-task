@@ -31,9 +31,9 @@ pipeline {
         stage('Build and push Docker Image to ECR') {
             agent {
                 docker {
-                    image 'amazon/aws-cli:latest' 
+                    image ' amazon/aws-cli:2.30.6' 
                     reuseNode true
-                    args "-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
             }
             steps {
@@ -42,10 +42,9 @@ pipeline {
                 }
                 
                 sh '''
-                dnf install -y docker
-                aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                 docker build -t $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION .
                 docker images
+                aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                 docker push $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                 
                 '''
