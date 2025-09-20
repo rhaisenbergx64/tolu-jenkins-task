@@ -37,12 +37,14 @@ pipeline {
                 }
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: '183e2709-638b-4bec-9307-59c6a121476f', passwordVariable: '', usernameVariable: '')]) {                  
+                withCredentials([usernamePassword(credentialsId: 'tolujenkinsuser-awsacesskey', passwordVariable: 'tolujenkinsuserpassword', usernameVariable: 'tolujenkinsuseruname')]) {         
                 }
+                
                 sh '''
                 amazon-linux-extras install docker -y
-                aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                 docker build -t $AWS_ECR_URI/AWS_IMAGE_NAME:$BUILD_VERSION .
+                docker images
+                aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                 docker push $AWS_ECR_URI/AWS_IMAGE_NAME:$BUILD_VERSION
                 
                 '''
@@ -67,7 +69,7 @@ pipeline {
                     mv hapi /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
-                    hapi vps vm list --format 
+                    hapi vps vm list --format json
                     
 
                     '''
