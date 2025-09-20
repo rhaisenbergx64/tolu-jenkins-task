@@ -37,7 +37,8 @@ pipeline {
                 }
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'tolujenkinsuser-awsacesskey', passwordVariable: 'tolujenkinsuserpassword', usernameVariable: 'tolujenkinsuseruname')]) {         
+                withCredentials([usernamePassword(credentialsId: 'tolujenkinstaskaws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    
                 }
                 
                 sh '''
