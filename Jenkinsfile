@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_DEFAULT_REGION = "eu-west-3"
+        AWS_DEFAULT_REGION = "us-east-1"
         AWS_IMAGE_NAME = "tolujenkinstask"
         AWS_ECR_URI = "public.ecr.aws/b3b5m5n0/tolu-jenkins-task"
         HAPI_VERSION = "0.1.1"
@@ -38,11 +38,10 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tolujenkinstaskaws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    
+
                 }
                 
                 sh '''
-                amazon-linux-extras install docker -y
                 docker build -t $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION .
                 docker images
                 aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
