@@ -62,7 +62,7 @@ pipeline {
                     docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     docker stop $AWS_IMAGE_NAME || true
                     docker rm $AWS_IMAGE_NAME || true
-                    docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:latest
+                    docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     '''
                         }
                     }
