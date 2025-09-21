@@ -99,6 +99,7 @@ pipeline {
                     docker rm $AWS_IMAGE_NAME || true
                     docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     '''
+                    }
                 }
             }
         }
