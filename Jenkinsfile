@@ -62,7 +62,7 @@ pipeline {
                     docker images
                     docker stop $AWS_IMAGE_NAME || true
                     docker rm $AWS_IMAGE_NAME || true
-                    docker run -d --name $AWS_IMAGE_NAME -p 3000:80 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                    docker run -d --name $AWS_IMAGE_NAME -p 3000:80 --network proxy $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     docker ps -a
                     '''
                         }
