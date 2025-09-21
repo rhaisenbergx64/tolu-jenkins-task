@@ -60,6 +60,7 @@ pipeline {
                     ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz echo Connected successfully && hostname && 
                     docker ps -a
                     docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                    docker images
                     docker stop $AWS_IMAGE_NAME || true
                     docker rm $AWS_IMAGE_NAME || true
                     docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
