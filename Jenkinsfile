@@ -52,6 +52,7 @@ pipeline {
             }
         }
 
+/*
         stage('Test SSH to VPS') {
             
             steps {
@@ -68,6 +69,7 @@ pipeline {
                         }
                     }
                 }
+                */
 
         stage('Deploy to hostinger vps') {
             agent {
@@ -78,6 +80,7 @@ pipeline {
                 }
             }
             steps {
+                sshagent(['VPS_SSH_KEY']) {
                 withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
                     sh '''
                     apt-get update && apt-get install -y curl tar wget
@@ -88,6 +91,12 @@ pipeline {
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
                     hapi vps vm list
+                    docker ps -a
+                    docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                    docker images
+                    docker stop $AWS_IMAGE_NAME || true
+                    docker rm $AWS_IMAGE_NAME || true
+                    docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     '''
                 }
             }
