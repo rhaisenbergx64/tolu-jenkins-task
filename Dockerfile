@@ -2,5 +2,5 @@ FROM nginx:1.29-alpine
 
 COPY build /usr/share/nginx/html
 
-EXPOSE 3000 
+EXPOSE 80
 
