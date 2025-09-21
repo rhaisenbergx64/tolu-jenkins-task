@@ -56,7 +56,7 @@ pipeline {
             steps {
                 sshagent(['VPS_SSH_KEY']) {
                     sh '''
-                    ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz << 'EOF'
+                    ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz << EOF
                     docker ps -a
                     docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     docker images
