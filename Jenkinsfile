@@ -52,26 +52,24 @@ pipeline {
             }
         }
 
-        stage('Test SSH to VPS') {
-            
+        stage('Pull and Deploy to Hostinger Vps') {
             steps {
                 sshagent(['VPS_SSH_KEY']) {
-                withCredentials([string(credentialsId: 'HOSTINGER_API_KEY', variable: 'HOSTINGER_TOKEN')]) {
                     sh '''
-                    ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz echo Connected successfully && hostname && 
+                    ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz << 'EOF'
                     docker ps -a
                     docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     docker images
                     docker stop $AWS_IMAGE_NAME || true
                     docker rm $AWS_IMAGE_NAME || true
                     docker run -d --name $AWS_IMAGE_NAME -p 80:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                    docker ps -a
+
+                EOF
                     '''
                         }
                     }
                 }
-        }
-
-
 
         stage('Deploy to hostinger vps') {
             agent {
@@ -93,7 +91,6 @@ pipeline {
                     hapi --help
                     hapi vps vm
                     cleanWs()
-
                     '''
                 }
             }
