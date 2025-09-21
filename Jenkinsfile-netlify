@@ -27,7 +27,7 @@ pipeline {
         stage('Deploy to Netlify') {
             agent {
                 docker {
-                    image 'node:24.8.0-alpine3.22' 
+                    image 'node:current-bookworm' 
                     reuseNode true
                 }
             }
