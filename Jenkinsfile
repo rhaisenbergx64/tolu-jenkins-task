@@ -21,7 +21,6 @@ pipeline {
             }
             steps {
                 sh '''
-                cleanWs()
                 npm ci
                 BUILD_VERSION=$BUILD_VERSION npm run build
                 echo "Build completed with version: $BUILD_VERSION"
@@ -91,7 +90,8 @@ pipeline {
                     mv hapi /usr/local/bin
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
-                    hapi vps vm list
+                    hapi vps vm 
+                    ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz echo Connected successfully && hostname && 
                     docker ps -a
                     docker pull $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     docker images
