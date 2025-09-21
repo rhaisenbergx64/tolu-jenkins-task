@@ -11,7 +11,7 @@ pipeline {
 
     stages {
 
-        stage("Build ") {
+        stage("Build") {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -30,38 +30,26 @@ pipeline {
         stage('Build and push Docker Image to ECR') {
             agent {
                 docker {
-                    image 'docker:24.0.5-cli'
+                    image 'amazon/aws-cli:2.13.2'
                     reuseNode true
-                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock"
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'tolujenkinstaskaws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
-                    apk add --no-cache python3 py3-pip
-                    pip3 install awscli
-
-                    echo "🔹 Building Docker image..."
+                    amazon-linux-extras install docker
                     docker build -t $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION .
-
-                    echo "🔹 Listing images..."
                     docker images
-
-                    echo "🔹 Logging in to AWS ECR..."
-                    aws ecr-public get-login-password --region $AWS_DEFAULT_REGION | \
-                        docker login --username AWS --password-stdin $AWS_ECR_URI
-
-                    echo "🔹 Pushing Docker image..."
+                    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3b5m5n0
                     docker push $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
-
-                    echo "🔹 Containers running locally:"
                     docker ps -a
                     '''
                 }
             }
         }
 
-        stage('Pull and Deploy to Hostinger Vps') {
+        stage('Pull and Deploy to Hostinger VPS') {
             steps {
                 sshagent(['VPS_SSH_KEY']) {
                     sh '''
@@ -71,20 +59,20 @@ pipeline {
                     docker images
                     docker stop $AWS_IMAGE_NAME || true
                     docker rm $AWS_IMAGE_NAME || true
-                    docker run -d --name $AWS_IMAGE_NAME -p 3000:80 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
+                    docker run -d --name $AWS_IMAGE_NAME -p 3000:3000 $AWS_ECR_URI/$AWS_IMAGE_NAME:$BUILD_VERSION
                     docker ps -a
-EOF
+                    EOF
                     '''
                 }
             }
         }
 
-        stage('Deploy to hostinger vps') {
+        stage('Deploy to Hostinger API (HAPI)') {
             agent {
                 docker {
                     image 'ubuntu:24.04'
                     reuseNode true
-                    args "-u root --entrypoint='' "
+                    args "-u root --entrypoint=''"
                 }
             }
             steps {
@@ -98,9 +86,9 @@ EOF
                     export HAPI_API_TOKEN=$HOSTINGER_TOKEN
                     hapi --help
                     hapi vps vm
-                    cleanWs()
                     '''
                 }
+                cleanWs()
             }
         }
     }
