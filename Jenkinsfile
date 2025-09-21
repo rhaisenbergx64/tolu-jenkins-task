@@ -52,6 +52,17 @@ pipeline {
             }
         }
 
+        stage('Test SSH to VPS') {
+            
+            steps {
+                sshagent(['VPS_SSH_KEY']) {
+                    sh '''
+                    ssh -p 2222 -o StrictHostKeyChecking=no rhaisenberg@server.toluwalasheolosunde.xyz echo Connected successfully && hostname && whoami
+                    '''
+                        }
+                    }
+                }
+
         stage('Deploy to hostinger vps') {
             agent {
                 docker {
