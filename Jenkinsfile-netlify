@@ -12,14 +12,14 @@ pipeline {
         stage("Build ") {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:20.12.2-buster'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
                 npm ci
-                BUILD_VERSION=$BUILD_VERSION npm run build
+                npm run build
                 echo "Build completed with version: $BUILD_VERSION"
                 '''
             }
