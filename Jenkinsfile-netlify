@@ -30,12 +30,11 @@ pipeline {
                 docker {
                     image 'node:current-bookworm' 
                     reuseNode true
-                    args '-u root'
                 }
             }
             steps {
                 sh '''
-                npm install -g netlify-cli
+                npm install netlify-cli --save-dev
                 echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                 node_modules/.bin/netlify status
                 node_modules/.bin/netlify build
