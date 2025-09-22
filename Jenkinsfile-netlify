@@ -30,6 +30,21 @@ pipeline {
             }
         }
 
+        stage("Test Build") {
+            agent {
+                docker {
+                    image "node:${NODE_IMAGE_VERSION}"
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                test -f build/index.html
+                npm test
+                '''
+            }
+        }
+
         stage('Deploy to Netlify') {
             agent {
                 docker {
