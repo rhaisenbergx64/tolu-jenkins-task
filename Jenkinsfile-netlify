@@ -34,7 +34,7 @@ pipeline {
             }
             steps {
                 sh '''
-                npm install netlify-cli --save-dev
+                npm install netlify-cli
                 echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                 node_modules/.bin/netlify status
                 node_modules/.bin/netlify build
@@ -42,5 +42,6 @@ pipeline {
                 '''
             }
         }
+        
     }
 }
