@@ -42,9 +42,10 @@
     "@types/node": "^20.8.6",
     "@babel/plugin-proposal-private-property-in-object"
   },
+  
   "jest-junit": {
     "suiteName": "jest tests",
-    "outputDirectory": "test-results",
+    "outputDirectory": "jest-results",
     "outputName": "junit.xml",
     "uniqueOutputName": "false",
     "classNameTemplate": "{classname}-{title}",
