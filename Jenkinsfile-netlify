@@ -43,6 +43,20 @@ pipeline {
                 npm test
                 '''
             }
+            post {
+                always {
+                    junit 'jest-results/junit.xml'
+
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'coverage/lcov-report',
+                        reportFiles: 'index.html'
+                        reportName: 'Coverage Report'
+                    ])
+                }
+            }
         }
 
         stage('Deploy to Netlify') {
