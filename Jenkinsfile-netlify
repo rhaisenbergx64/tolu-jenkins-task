@@ -6,6 +6,7 @@ pipeline {
         NETLIFY_SITE_ID = '4b2a17d2-94c5-4661-ad99-d82075201d9d'
         NETLIFY_AUTH_TOKEN = credentials('new-netlify-token')
         NODE_IMAGE_VERSION = '20.12.2-bullseye'
+        CI_ENVIRONMENT_URL = 'https://jolly-panda-8722cd.netlify.app/'
     }
 
     stages {
