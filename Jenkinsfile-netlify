@@ -53,6 +53,7 @@ pipeline {
                     }
                 }
             }
+        }
 
                 stage('E2E') {
                     agent {
@@ -81,12 +82,10 @@ pipeline {
                                 reportName: 'Playwright HTML Report',
                                 reportTitles: '', 
                                 useWrapperFileDirectly: true
-
                              ])
                         }
                     }
                 } 
-            }
         }
 
         stage('Deploy to Netlify') {
@@ -105,7 +104,6 @@ pipeline {
                 node_modules/.bin/netlify build
                 node_modules/.bin/netlify deploy --dir=build --prod
                 '''
+                }
+            }
         }
-    }
-        
- }
