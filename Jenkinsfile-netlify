@@ -86,7 +86,6 @@ pipeline {
                         }
                     }
                 } 
-        }
 
         stage('Deploy to Netlify') {
             agent {
@@ -107,3 +106,4 @@ pipeline {
                 }
             }
         }
+    }
