@@ -31,7 +31,7 @@ pipeline {
 
         stage("Tests") {
             parallel {
-                stage{
+                stage('Unit tests') {
                     agent {
                         docker {
                             image "node:${NODE_IMAGE_VERSION}"
@@ -52,6 +52,7 @@ pipeline {
                         }
                     }
                 }
+            }
 
                 stage('E2E') {
                     agent {
