@@ -21,10 +21,7 @@ pipeline {
             steps {
                 sh '''
                 ls -la
-                node --version
-                npm --version
-                npm install
-                npm install react-scripts --save
+                npm --version && node --
                 npm ci
                 npm run build
                 echo "Build completed with version: $BUILD_VERSION"
