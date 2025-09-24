@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh '''
                 ls -la
-                npm --version && node --
+                npm --version && node --version
                 npm ci
                 cross-env REACT_APP_BUILD_VERSION=1.0.$BUILD_ID npm run build
                 echo "Build completed with version: $BUILD_VERSION"
