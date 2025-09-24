@@ -29,38 +29,64 @@ pipeline {
             }
         }
 
-        stage("Test Build") {
-            agent {
-                docker {
-                    image "node:${NODE_IMAGE_VERSION}"
-                    reuseNode true
-                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
-            steps {
-                sh '''
-                test -f build/index.html
-                npm test
-                '''
-            }
+        stage("Tests") {
+            parallel {
+                stage{
+                    agent {
+                        docker {
+                            image "node:${NODE_IMAGE_VERSION}"
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh  '''
+                            test -f build/index.html
+                            npm test
 
-        }
-    /*
-            post {
-                always {
-                    junit 'jest-results/junit.xml'    
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'coverage/lcov-report',
-                        reportFiles: 'index.html',
-                        reportName: 'Coverage Report'
-                    ])
+                            '''
                 }
+                post {
+                    always {
+                        junit 'jest-results/junit.xml'
+
+                        }
+                    }
+                }
+
+                stage('E2E') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode
+                        }
+                    }
+
+                    steps {
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test --reporter=html
+                        '''
+                    }
+                    post{
+                        always{
+                            publishHTML([
+                                allowMissing: false, 
+                                alwaysLinkToLastBuild: false, 
+                                keepAll: false, 
+                                reportDir: 'playwright-report', 
+                                reportFiles: 'index.html', 
+                                reportName: 'Playwright HTML Report',
+                                reportTitles: '', 
+                                useWrapperFileDirectly: true
+
+                             ])
+                        }
+                    }
+                } 
             }
         }
-    */
 
         stage('Deploy to Netlify') {
             agent {
