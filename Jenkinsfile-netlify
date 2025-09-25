@@ -38,7 +38,7 @@ pipeline {
                 stage('Unit tests') {
                     agent {
                         docker {
-                            image "node:${NODE_IMAGE_VERSION}"
+                            image 'node:20-alpine'
                             reuseNode true
                         }
                     }
