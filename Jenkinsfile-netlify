@@ -17,7 +17,6 @@ pipeline {
                 docker {
                     image "node:${NODE_IMAGE_VERSION}"
                     reuseNode true
-                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
