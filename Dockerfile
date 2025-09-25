@@ -1,6 +1,7 @@
-FROM nginx:1.29-alpine
+FROM node:20.12.2-bullseye
 
-COPY build /usr/share/nginx/html
+# match Jenkins user UID/GID, e.g. 1000:1000
+RUN usermod -u 1000 node && groupmod -g 1000 node
 
-EXPOSE 80
-
+USER node
+WORKDIR /home/node/app
