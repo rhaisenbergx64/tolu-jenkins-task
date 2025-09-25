@@ -26,8 +26,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    rm -rf .netlify playwright-report test-results
-                    apk add --no-cache bash git python3 make g++
                     npm ci
                     BUILD_VERSION=$BUILD_VERSION npm run build
                     echo "Build completed with version: $BUILD_VERSION"
