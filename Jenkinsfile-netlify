@@ -7,9 +7,34 @@ pipeline {
         CI_ENVIRONMENT_URL = 'https://jolly-panda-8722cd.netlify.app/'
         NETLIFY_SITE_ID = '4b2a17d2-94c5-4661-ad99-d82075201d9d' 
         NETLIFY_AUTH_TOKEN = credentials('new-netlify-token')
+
     }
 
     stages {
+
+        stage('Deploy To AWS') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli'
+                    args "--entrypoint=''"
+                }
+            }
+            environment {
+                AWS_S3_BUCKET = 'tolu-jenkins-task'
+            }
+            steps {
+             withCredentials([usernamePassword(credentialsId: 'tolujenkinstaskaws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh '''
+
+                aws -version
+                aws s3 cp cp index.html s3://$AWS_S3_BUCKET/index.html
+
+                '''
+
+             }
+                
+        }
+    }
 
         stage("Build ") {
             agent {
