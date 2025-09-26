@@ -51,6 +51,12 @@ pipeline {
                 }
                 }
             }
+            post {
+                success {
+                    junit 'jest-results/junit.xml'
+
+                }
+            }
         }
         /*
 
