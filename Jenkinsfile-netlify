@@ -91,7 +91,7 @@ pipeline {
         stage('Deploy to Netlify') {
             agent {
                 docker {
-                    image "node:${NODE_IMAGE_VERSION}"
+                    image "node:20-alpine"
                     reuseNode true
                     args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
