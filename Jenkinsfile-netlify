@@ -54,7 +54,13 @@ pipeline {
             post {
                 success {
                     junit 'jest-results/junit.xml'
+                    archiveArtifacts artifacts: 'coverage/**', fingerprint: true
 
+                    publishHTML([
+                        reportDir: 'coverage/lcov-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Code Coverage'
+                    ])
                 }
             }
         }
