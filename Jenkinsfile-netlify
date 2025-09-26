@@ -14,9 +14,9 @@ pipeline {
         stage("Build ") {
             agent {
                 docker {
-                    image 'public.ecr.aws/b3b5m5n0/tolu-jenkins-task:1.0.103'
+                    image 'node-20-alpine'
                     reuseNode true
-                    args '-u root'
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
 
 
                 }
