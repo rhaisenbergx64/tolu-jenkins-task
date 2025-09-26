@@ -6,7 +6,6 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "jest-junit": "^16.0.0",
     "netlify-cli": "^23.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -42,7 +41,8 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.8.6",
-    "cross-env": "^10.0.0"
+    "cross-env": "^10.0.0",
+    "jest-junit": "^16.0.0"
   },
   "jest-junit": {
     "suiteName": "jest tests",
