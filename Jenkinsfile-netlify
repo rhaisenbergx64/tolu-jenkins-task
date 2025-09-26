@@ -45,8 +45,7 @@ pipeline {
                     steps {
                         sh  '''
                             test -f build/index.html
-                            npm test
-
+                            npm test -- --coverage --reporters=default --reporters=jest-junit
                             '''
                 }
                 }
