@@ -7,6 +7,7 @@ pipeline {
         AWS_ECR_URI = "public.ecr.aws/b3b5m5n0"
         HAPI_VERSION = "0.1.1"
         BUILD_VERSION = "1.0.$BUILD_ID"
+        REACT_APP_BUILD_VERSION = "1.0.$BUILD_ID"
 
     }
 
@@ -15,8 +16,9 @@ pipeline {
         stage("Build ") {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:20-alpine'
                     reuseNode true
+                    args '-u root'
                 }
             }
             steps {
